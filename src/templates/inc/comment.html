@@ -1,0 +1,14 @@
+{% load static %}
+
+<div class="media comment border m-4 p-2">
+    {% if comment.author.avatar %}
+    <img src="{{ comment.author.avatar.url }}" width="64" height="64" class="mr-3 rounded-circle" alt="...">
+    {% else %}
+
+    <img src="../static/img/2.jpg" width="64" height="64" class="mr-3 rounded-circle" alt="avatar">
+    {% endif %}
+    <div class="media-body">
+        <h5 class="mt-0">{{ comment.author.user.username }}</h5>
+        {{ comment.text }}
+    </div>
+</div>

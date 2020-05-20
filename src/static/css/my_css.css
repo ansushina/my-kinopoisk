@@ -1,0 +1,44 @@
+.film-card {
+    width: 12rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 0 2rem 0 rgba(0,0,0,0.10);
+}
+
+.film-card__img {
+    height: 15rem;
+}
+
+.card-body {
+    width: 100%;
+    opacity: 0;
+    position: absolute;
+    bottom: 0;
+    padding: 1rem;
+}
+
+.film-card:hover {
+    transform:scale(1.05);
+    transition: 0.5s;
+    -moz-transition: 0.5s;
+    -o-transition: 0.5s;
+    -webkit-transition: 0.5s;
+}
+
+
+.film-card:hover .card-body {
+    opacity: 1;
+    background-color: white;
+    transition: 0.5s;
+    -moz-transition: 0.5s;
+    -o-transition: 0.5s;
+    -webkit-transition: 0.5s;
+}
+
+a:hover {
+    color:cyan;
+}
+
+.film__title {
+
+}
+
