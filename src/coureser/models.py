@@ -1,7 +1,7 @@
-from django.db import models
-from django.contrib.auth.models import User
-from django.conf import settings
 from coureser.managers import FilmManager
+from django.conf import settings
+from django.contrib.auth.models import User
+from django.db import models
 
 
 # Create your models here.
@@ -27,7 +27,7 @@ class Actor(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.firstName + " " +self.lastName
+        return self.firstName + " " + self.lastName
 
 
 class Profile(models.Model):

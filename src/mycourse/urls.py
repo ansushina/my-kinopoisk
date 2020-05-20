@@ -23,4 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name="index"),
     path('film/<int:fid>/', views.film, name='film'),
+    path('login/', views.login, name='login'),
+    path('register/', views.register, name='register'),
+    path('logout/',views.logout, name='logout')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

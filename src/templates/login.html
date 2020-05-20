@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="text-center align-items-center d-flex flex-column">
+    <h3 class="p-4">Вход</h3>
+    <div class="p-4 col-4">
+        <form action="{% url 'login' %}" method="POST" novalidate>
+            {% csrf_token %}
+            <input type='hidden' name='next' value='{{ next }}'>
+            <table>
+                {{ form|crispy }}
+            </table>
+            <button type="submit" class="btn btn-primary mb-2"> Войти </button>
+        </form>
+    </div>
+    <a href="{% url 'register'  %}">Зарегестрироваться</a>
+    </div>
+{% endblock %}

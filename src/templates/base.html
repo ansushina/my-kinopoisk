@@ -23,7 +23,7 @@
     <form class="form-inline">
         <input class="form-control mr-sm-1 border border-white" type="search"
                placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Find!</button>
+        <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Найти</button>
     </form>
     {% if user.is_authenticated %}
         <div class="media">
@@ -36,22 +36,22 @@
                 <h5 class="ml-3 text-light">{{ user.username }}</h5>
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">settings</a>
+                        <a class="nav-link" href="#">Настройки</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">log out</a>
+                        <a class="nav-link" href="{% url 'logout'  %}">Выход</a>
                     </li>
                 </ul>
             </div>
         </div>
     {% else %}
-        <div class="media mr-5">
+        <div class="media">
             <ul class="nav mr-5">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login'  %}">log in</a>
+                    <a class="nav-link" href="{% url 'login'  %}">Вход</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'register' %}">register</a>
+                    <a class="nav-link" href="{% url 'register' %}">Регистрация</a>
                 </li>
             </ul>
         </div>
