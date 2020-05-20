@@ -4,17 +4,16 @@
 {% load crispy_forms_tags %}
 {% block content %}
     <div class="text-center align-items-center d-flex flex-column">
-    <h3>Вход</h3>
+    <h3 >Настройки</h3>
     <div class="p-4 col-4">
-        <form action="{% url 'login' %}" method="POST" novalidate>
+        <form  enctype="multipart/form-data" action="{% url 'settings' %}" method="POST" novalidate>
             {% csrf_token %}
             <input type='hidden' name='next' value='{{ next }}'>
             <table>
                 {{ form|crispy }}
             </table>
-            <button type="submit" class="btn btn-primary mb-2"> Войти </button>
+            <button type="submit" class="btn btn-primary mb-2"> Изменить </button>
         </form>
     </div>
-    <a href="{% url 'register'  %}">Зарегестрироваться</a>
     </div>
 {% endblock %}

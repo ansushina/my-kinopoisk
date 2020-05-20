@@ -1,0 +1,48 @@
+{% load static %}
+
+
+<div class="film-big-card border p-4 m-4">
+    <div class="row">
+        <div class="col-4">
+            {% if film.image %}
+                <img alt="Responsive image" class="film__img img-fluid" src="{{ film.image.url }}">
+            {% else %}
+
+                <img alt="Responsive image" class="film__img img-fluid" src="#">
+            {% endif %}
+        </div>
+        <div class="col-8">
+            <div class="row">
+                <div class=" film__title "><h1> {{ film.title }}</h1></div>
+            </div>
+            <div class="row">
+                <div class="col-3 film__param text-right"> Год:</div>
+                <div class="col">{{ film.year }}</div>
+            </div>
+            <div class="row">
+                <div class="col-3 film__param text-right"> Страны:</div>
+                <div class="col">
+                    {% for c in film.countries.all %}
+                        <a href="/">{{ c }}</a>,
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3 film__param text-right"> Жанры:</div>
+                <div class="col">
+                    {% for g in film.genres.all %}
+                        <a>{{ g }}</a>,
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3 film__param text-right"> Актеры:</div>
+                <div class="col">
+                    {% for a in film.actors.all %}
+                        <a class="">{{ a }}</a>,
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

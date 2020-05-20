@@ -1,3 +1,4 @@
+from coureser.models import Genre, Actor, Country
 from django import forms
 
 error_username = {
@@ -41,3 +42,43 @@ class CommentForm(forms.Form):
         required=False,
         widget=forms.Textarea(attrs={'rows': '5'})
     )
+
+
+class SettingsForm(forms.Form):
+    username = forms.CharField(
+        label="Имя пользователя",
+        max_length=20,
+        min_length=2,
+        error_messages=error_username,
+        required=False,
+    )
+    email = forms.EmailField(required=False)
+    avatar = forms.ImageField(
+        required=False,
+        label="Изменить аватар"
+    )
+
+
+class SearchForm(forms.Form):
+    genre = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple,
+        queryset=Genre.objects.all(),
+        required=False,
+        label="Жанры"
+    )
+    country = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple,
+        queryset=Country.objects.all(),
+        required=False,
+        label="Страны"
+    )
+    actor = forms.ModelMultipleChoiceField(
+        widget=forms.SelectMultiple,
+        queryset=Actor.objects.all(),
+        required=False,
+        label="Актеры"
+    )
+    year_from = forms.IntegerField(min_value=2000, max_value=2020, label="Год от", required=False,)
+    year_to = forms.IntegerField(min_value=2000, max_value=2020, label="До", required=False,)
+
+

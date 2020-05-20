@@ -1,13 +1,24 @@
-from coureser.forms import LoginForm, RegisterForm, CommentForm
+from coureser.forms import LoginForm, RegisterForm, CommentForm, SettingsForm, SearchForm
 from coureser.models import Film, Profile, Comment
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.core.paginator import Paginator
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 
 
 # Create your views here.
+def paginate(objects_list, request, page_size=10):
+    # do smth with Paginator, etc…
+
+    paginator = Paginator(objects_list, page_size)
+    page = request.GET.get('page')
+    # №objects_page = paginator.page()
+    objects_page = paginator.get_page(page)
+
+    return objects_page, paginator
 
 
 def index(request):
@@ -83,3 +94,27 @@ def register(request):
 def logout(request):
     auth.logout(request)
     return redirect('/')
+
+
+@login_required
+def settings(request):
+    if request.POST:
+        form = SettingsForm(request.POST, request.FILES)
+        if form.is_valid():
+            cdata = form.cleaned_data
+            print(cdata)
+            Profile.objects.update(request.user, cdata)
+            return redirect('/')
+    else:
+        form = SettingsForm()
+    return render(request, 'settings.html', {'form': form})
+
+
+def search(request):
+    query = request.GET.get('q')
+    films = Film.objects.filter(
+        Q(title__icontains=query)
+    )
+    films, p = paginate(films, request, 20)
+    form = SearchForm()
+    return render(request, 'search.html', {'films': films, 'form': form})

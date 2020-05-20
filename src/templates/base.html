@@ -17,11 +17,11 @@
 <body>
 
 <nav class="navbar navbar-dark bg-dark border-bottom border-info">
-    <a class="navbar-brand ml-2 p-2" href ="/">
+    <a class="navbar-brand ml-2 p-2" href ="{% url 'index' %}">
         <strong><h1>MoviesToWatch</h1></strong>
     </a>
-    <form class="form-inline">
-        <input class="form-control mr-sm-1 border border-white" type="search"
+    <form class="form-inline" action="{% url 'search' %}" method="get">
+        <input name="q" class="form-control mr-sm-1 border border-white" type="text"
                placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Найти</button>
     </form>
@@ -36,7 +36,7 @@
                 <h5 class="ml-3 text-light">{{ user.username }}</h5>
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Настройки</a>
+                        <a class="nav-link" href="{% url 'settings' %}">Настройки</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'logout'  %}">Выход</a>

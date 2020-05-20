@@ -23,6 +23,13 @@
     -o-transition: 0.5s;
     -webkit-transition: 0.5s;
 }
+.film-big-card:hover {
+    transform:scale(1.05);
+    transition: 0.5s;
+    -moz-transition: 0.5s;
+    -o-transition: 0.5s;
+    -webkit-transition: 0.5s;
+}
 
 
 .film-card:hover .card-body {
@@ -37,8 +44,8 @@
 a:hover {
     color:cyan;
 }
-
-.film__title {
-
+.film-big-card .film__img {
+    width: 12rem;
+    height: 15rem;
 }
 
