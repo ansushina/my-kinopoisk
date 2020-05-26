@@ -21,12 +21,13 @@ from django.urls import path
 
 urlpatterns = [
                   path('admin/', admin.site.urls),
-                  path('', views.index, name="index"),
-                  path('film/<int:fid>/', views.film, name='film'),
-                  path('login/', views.login, name='login'),
-                  path('register/', views.register, name='register'),
-                  path('logout/', views.logout, name='logout'),
-                  path('settings/', views.settings, name='settings'),
-                  path('search/', views.search, name='search'),
+                  path('', views.IndexView.as_view(), name="index"),
+                  path('film/<int:pk>/', views.FilmView.as_view(), name='film'),
+                  path('login/', views.LoginView.as_view(), name='login'),
+                  path('register/', views.RegisterView.as_view(), name='register'),
+                  path('logout/', views.LogoutView.as_view(), name='logout'),
+                  path('settings/', views.SettingsView.as_view(), name='settings'),
+                  path('search/', views.SearchView.as_view(), name='search'),
+                  path('like/<int:pk>/', views.like, name='like'),
               ] + (static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
                    + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT))

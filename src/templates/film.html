@@ -56,6 +56,16 @@
             </div>
         </div>
 
+    <div class="row">
+            <form class="col-2" action="{% url 'like' film.id %}" method="post" novalidate>
+                {% csrf_token %}
+                <table>
+                    {{ form_like | crispy }}
+                </table>
+                <button type="submit" class="btn btn-dark">Оценить</button>
+            </form>
+    </div>
+
         <div class="mt-3"><h3>Комментарии:</h3></div>
         <div class="comments">
             {% for comment in film.comment_set.all %}

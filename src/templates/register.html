@@ -9,6 +9,8 @@
 
             <form action="{% url 'register' %}" method="POST" novalidate>
                 {% csrf_token %}
+
+                <input type='hidden' name='next' value='{{ next }}'>
                 <table>
                     {{ form|crispy }}
                 </table>
