@@ -1,13 +1,12 @@
 from coureser.forms import LoginForm, RegisterForm, CommentForm, SettingsForm, SearchForm, LikeForm
-from coureser.models import Film, Profile, Comment
+from coureser.models import Film, Profile, Comment, Like
 from django.contrib import auth
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.views.generic import TemplateView, View, FormView, DetailView
 
 
@@ -27,6 +26,10 @@ class IndexView(TemplateView):
     template_name = 'index.html'
 
     def get_context_data(self, **kwargs):
+        k = {
+            'adsad': 11,
+            'sdddd': 11
+        }
         context = super().get_context_data(**kwargs)
         context['new_films'] = Film.objects.new_top()
         context['most_commented'] = Film.objects.most_commented()
@@ -40,10 +43,15 @@ class SearchView(FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         query = self.request.GET.get('q')
-        films = Film.objects.filter(
-            Q(title__icontains=query)
-        )
-        films, p = paginate(films, self.request, 20)
+        querydict = self.request.GET
+        print(querydict.getlist('genre'))
+        films = Film.objects.search_with_filters(querydict)
+        print(query)
+        if query:
+            films = films.filter(
+                Q(title__icontains=query)
+            )
+            films, p = paginate(films, self.request, 20)
         context['films'] = films
         return context
 
@@ -134,8 +142,14 @@ class SettingsView(FormView):
             return redirect('/')
 
 
+class LikeView(FormView):
+    form_class = LikeForm
 
-
-@login_required
-def like(request):
-    pass
+    def form_valid(self, form):
+        print(self.kwargs['pk'])
+        if not self.request.user.is_authenticated:
+            return redirect('/login/')
+        cdata = form.cleaned_data
+        answer = Like.objects.like(cdata['value'], self.kwargs['pk'], self.request.user)
+        Film.objects.count_rating(self.kwargs['pk'])
+        return redirect('/film/' + str(self.kwargs['pk']))

@@ -1,4 +1,4 @@
-from coureser.managers import FilmManager, ProfileManager
+from coureser.managers import FilmManager, ProfileManager, LikeManager
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
@@ -52,6 +52,7 @@ class Film(models.Model):
     year = models.IntegerField(default=0)
     title = models.TextField()
     description = models.TextField()
+    rating = models.IntegerField(default=0)
     genres = models.ManyToManyField(
         to=Genre,
         blank=True)
@@ -86,7 +87,10 @@ class Like(models.Model):
         on_delete=models.CASCADE
     )
 
+    value = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+    objects = LikeManager()
 
     def __str__(self):
         return "from " + self.author.user.username + " on " + self.film.title

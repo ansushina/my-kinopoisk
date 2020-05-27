@@ -28,6 +28,6 @@ urlpatterns = [
                   path('logout/', views.LogoutView.as_view(), name='logout'),
                   path('settings/', views.SettingsView.as_view(), name='settings'),
                   path('search/', views.SearchView.as_view(), name='search'),
-                  path('like/<int:pk>/', views.like, name='like'),
+                  path('like/<int:pk>/', views.LikeView.as_view(), name='like'),
               ] + (static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
                    + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT))
