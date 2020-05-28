@@ -60,6 +60,7 @@ class SettingsForm(forms.Form):
 
 
 class SearchForm(forms.Form):
+    q = forms.CharField(label="Название", required=False)
     genre = forms.ModelMultipleChoiceField(
         widget=forms.CheckboxSelectMultiple,
         queryset=Genre.objects.all(),
@@ -78,8 +79,8 @@ class SearchForm(forms.Form):
         required=False,
         label="Актеры"
     )
-    year_from = forms.IntegerField(min_value=2000, max_value=2020, label="Год от", required=False, )
-    year_to = forms.IntegerField(min_value=2000, max_value=2020, label="До", required=False, )
+    year_from = forms.IntegerField(min_value=1930, max_value=2020, label="Год от", required=False, )
+    year_to = forms.IntegerField(min_value=1930, max_value=2020, label="До", required=False, )
 
 
 class LikeForm(forms.Form):
@@ -91,5 +92,6 @@ class LikeForm(forms.Form):
             ('4', '4'),
             ('5', '5')
         ),
-        label="Оцените фильм"
+        label="Оцените фильм",
+        required=False
     )

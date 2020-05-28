@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.http import JsonResponse
 
 
@@ -24,22 +24,23 @@ class FilmManager(models.Manager):
 
     def search_with_filters(self, querydict):
         films = self.all()
-        params = ['genre', 'country', 'actor', 'year_from', 'year_to']
+        params = ['q', 'genre', 'country', 'actor', 'year_from', 'year_to']
         for p in params:
-            print(p)
-            print(querydict.getlist(p))
             for item in querydict.getlist(p):
+                if p == 'q' and item != '':
+                    films = films.filter(
+                        Q(title__icontains=item)
+                    )
                 if p == 'year_from' and item != '':
                     films = films.filter(year__gte=item)
                 elif p == 'year_to' and item != '':
-                    films = films.filter(year__Ite=item)
+                    films = films.filter(year__lte=item)
                 elif p == 'genre':
                     films = films.filter(genres__id=item)
                 elif p == 'country':
-                    films = films.filter(coutries__id=item)
+                    films = films.filter(countries__id=item)
                 elif p == 'actor':
                     films = films.filter(actors__id=item)
-            print(films)
         return films
 
 
@@ -58,6 +59,7 @@ class ProfileManager(models.Manager):
         value = cdata.get('avatar', False)
         if value:
             fields_to_update['profile'].append('avatar')
+            print(value)
             setattr(profile, 'avatar', value)
         user.save(update_fields=fields_to_update['user'])
         profile.save(update_fields=fields_to_update['profile'])
@@ -69,7 +71,9 @@ class LikeManager(models.Manager):
         film = self.filter(id=film_id).first()
         like = self.filter(author_id=user.id, film_id=film_id).first()
         if like:
-            return JsonResponse({"status": "error"})
+            setattr(like, 'value', value)
+            like.save()
+            return JsonResponse({"status": "ok"})
         print(user.id)
         self.create(author_id=user.id, film_id=film_id, value=value)
         return JsonResponse({"status": "ok"})

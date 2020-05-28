@@ -13,17 +13,24 @@
         </div>
         <div class="col-8">
             <div class="row">
-                <div class=" film__title "><h1> {{ film.title }}</h1></div>
+                <div class=" film__title "><h1>
+                    <a class="text-decoration-none text-dark" href="{% url 'film' film.id %}">{{ film.title }}</a>
+                </h1></div>
             </div>
             <div class="row">
                 <div class="col-3 film__param text-right"> Год:</div>
-                <div class="col">{{ film.year }}</div>
+                <div class="col">
+                    <a href="{% url 'search' %}?year_from={{ film.year }}&year_to={{ film.year }}">{{ film.year }}</a>
+                </div>
             </div>
             <div class="row">
                 <div class="col-3 film__param text-right"> Страны:</div>
                 <div class="col">
                     {% for c in film.countries.all %}
-                        <a href="/">{{ c }}</a>,
+                        <a href="{% url 'search' %}?country={{ c.id }}">{{ c }}</a>
+                        {% if forloop.revcounter0 != 0 %}
+                            ,
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
@@ -31,7 +38,10 @@
                 <div class="col-3 film__param text-right"> Жанры:</div>
                 <div class="col">
                     {% for g in film.genres.all %}
-                        <a>{{ g }}</a>,
+                        <a href="{% url 'search' %}?genre={{ g.id }}">{{ g }}</a>
+                        {% if forloop.revcounter0 != 0 %}
+                            ,
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
@@ -39,7 +49,8 @@
                 <div class="col-3 film__param text-right"> Актеры:</div>
                 <div class="col">
                     {% for a in film.actors.all %}
-                        <a class="">{{ a }}</a>,
+                        <a href="{% url 'search' %}?actor={{ a.id }}">{{ a }}</a>
+                        {% if forloop.revcounter0 != 0 %},{% endif %}
                     {% endfor %}
                 </div>
             </div>

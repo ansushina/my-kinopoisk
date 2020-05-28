@@ -20,13 +20,18 @@
                 </div>
                 <div class="row">
                     <div class="col-3 film__param text-right"> Год:</div>
-                    <div class="col">{{ film.year }}</div>
+                    <div class="col">
+                        <a href="{% url 'search' %}?year_from={{  film.year }}&year_to={{  film.year}}">{{ film.year }}</a>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-3 film__param text-right"> Страны:</div>
                     <div class="col">
                         {% for c in film.countries.all %}
-                            <a href="/">{{ c }}</a>,
+                            <a href="{% url 'search' %}?country={{ c.id }}">{{ c }}</a>
+                            {% if forloop.revcounter0 != 0 %}
+                                ,
+                            {% endif %}
                         {% endfor %}
                     </div>
                 </div>
@@ -34,7 +39,10 @@
                     <div class="col-3 film__param text-right"> Жанры:</div>
                     <div class="col">
                         {% for g in film.genres.all %}
-                            <a>{{ g }}</a>,
+                            <a href="{% url 'search' %}?genre={{ g.id }}">{{ g }}</a>
+                            {% if forloop.revcounter0 != 0 %}
+                                ,
+                            {% endif %}
                         {% endfor %}
                     </div>
                 </div>
@@ -42,7 +50,10 @@
                     <div class="col-3 film__param text-right"> Актеры:</div>
                     <div class="col">
                         {% for a in film.actors.all %}
-                            <a class="">{{ a }}</a>,
+                            <a href="{% url 'search' %}?actor={{ a.id }}">{{ a }}</a>
+                            {% if forloop.revcounter0 != 0 %}
+                                ,
+                            {% endif %}
                         {% endfor %}
                     </div>
                 </div>
@@ -56,30 +67,40 @@
             </div>
         </div>
 
-    <div class="row">
-            <form class="col-2" action="{% url 'like' film.id %}" method="post" novalidate>
-                {% csrf_token %}
-                <table>
-                    {{ form_like | crispy }}
-                </table>
-                <button type="submit" class="btn btn-dark">Оценить</button>
-            </form>
-    </div>
+        {% if user.is_authenticated %}
+            <div class="row">
+                <form class="col-2" action="{% url 'like' film.id %}" method="post" novalidate>
+                    {% csrf_token %}
+                    <table>
+                        {{ form_like | crispy }}
+                    </table>
+                    <button type="submit" class="btn btn-dark">Оценить</button>
+                </form>
+            </div>
+        {% endif %}
 
         <div class="mt-3"><h3>Комментарии:</h3></div>
         <div class="comments">
-            {% for comment in film.comment_set.all %}
+        <a name="paginated"></a>
+            {% for comment in comments %}
                 {% include 'inc/comment.html' %}
             {% endfor %}
+            {% include 'inc/pagination.html' with page=comments %}
         </div>
-        <div class="my-comment border m-4 p-4">
-            <form action="{% url 'film'  film.id %}" method="POST" novalidate>
-                {% csrf_token %}
-                <table>
-                    {{ form | crispy }}
-                </table>
-                <button type="submit" class="btn btn-dark">Оставить комментарий</button>
-            </form>
-        </div>
+        {% if user.is_authenticated %}
+            <div class="my-comment border m-4 p-4">
+                <form action="{% url 'film'  film.id %}" method="POST" novalidate>
+                    {% csrf_token %}
+                    <table>
+                        {{ form | crispy }}
+                    </table>
+                    <button type="submit" class="btn btn-dark">Оставить комментарий</button>
+                </form>
+            </div>
+        {% else %}
+            <div class="border m-4 p-4">
+                <div> Чтобы оставлять комментарий <a href="{% url 'login' %}">Войдите</a></div>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

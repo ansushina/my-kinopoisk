@@ -26,10 +26,6 @@ class IndexView(TemplateView):
     template_name = 'index.html'
 
     def get_context_data(self, **kwargs):
-        k = {
-            'adsad': 11,
-            'sdddd': 11
-        }
         context = super().get_context_data(**kwargs)
         context['new_films'] = Film.objects.new_top()
         context['most_commented'] = Film.objects.most_commented()
@@ -44,15 +40,10 @@ class SearchView(FormView):
         context = super().get_context_data(**kwargs)
         query = self.request.GET.get('q')
         querydict = self.request.GET
-        print(querydict.getlist('genre'))
         films = Film.objects.search_with_filters(querydict)
-        print(query)
-        if query:
-            films = films.filter(
-                Q(title__icontains=query)
-            )
-            films, p = paginate(films, self.request, 20)
+        films, p = paginate(films, self.request, 20)
         context['films'] = films
+        context['form'] = self.form_class(querydict)
         return context
 
 
@@ -75,12 +66,19 @@ class FilmView(FormView, DetailView):
             text=cdata['text'],
             author=self.request.user.profile,
             film_id=self.kwargs['pk'])
-        # todo пагинация
-        return redirect('/film/' + str(self.kwargs['pk']))  # todo правильные редиректы
+        comments = Comment.objects.filter(film__id=self.kwargs['pk'])
+        comments, p = paginate(comments, self.request, 20)
+        return redirect('/film/' + str(self.kwargs['pk']) + '/' + '?page='+str(p.num_pages) + '#paginated')  # todo правильные редиректы
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form_like'] = LikeForm
+        like = Like.objects.filter(film_id=self.kwargs['pk'], author_id=self.request.user.id).first()
+        if like:
+            likedata = {'value':like.value}
+        else:
+            likedata = {}
+        context['form_like'] = LikeForm(likedata)
+        context['comments'], p = paginate(context['film'].comment_set.all(), self.request, 20)
         return context
 
 
