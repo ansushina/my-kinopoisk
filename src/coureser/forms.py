@@ -75,7 +75,7 @@ class SearchForm(forms.Form):
     )
     actor = forms.ModelMultipleChoiceField(
         widget=forms.SelectMultiple,
-        queryset=Actor.objects.all(),
+        queryset=Actor.objects.all().order_by('firstName'),
         required=False,
         label="Актеры"
     )
@@ -93,5 +93,6 @@ class LikeForm(forms.Form):
             ('5', '5')
         ),
         label="Оцените фильм",
-        required=False
+        required=False,
+        widget=forms.RadioSelect,
     )

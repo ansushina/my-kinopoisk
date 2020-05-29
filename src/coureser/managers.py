@@ -11,6 +11,9 @@ class FilmManager(models.Manager):
     def most_commented(self):
         return self.annotate(count=Count('comment')).order_by('-count')[:10]
 
+    def most_rating(self):
+        return self.order_by('rating')[:10]
+
     def count_rating(self, film_id):
         film = self.get(id=film_id)
         likes = film.like_set.all()
@@ -26,21 +29,23 @@ class FilmManager(models.Manager):
         films = self.all()
         params = ['q', 'genre', 'country', 'actor', 'year_from', 'year_to']
         for p in params:
-            for item in querydict.getlist(p):
-                if p == 'q' and item != '':
+            item = querydict.getlist(p)
+            if len(item) == 1:
+                if p == 'q' and item[0] != '':
                     films = films.filter(
-                        Q(title__icontains=item)
+                        Q(title__icontains=item[0])
                     )
-                if p == 'year_from' and item != '':
-                    films = films.filter(year__gte=item)
-                elif p == 'year_to' and item != '':
-                    films = films.filter(year__lte=item)
-                elif p == 'genre':
-                    films = films.filter(genres__id=item)
+                if p == 'year_from' and item[0] != '':
+                    films = films.filter(year__gte=item[0])
+                elif p == 'year_to' and item[0] != '':
+                    films = films.filter(year__lte=item[0])
+            if len(item) >= 1:
+                if p == 'genre':
+                    films = films.filter(genres__id__in=item)
                 elif p == 'country':
-                    films = films.filter(countries__id=item)
+                    films = films.filter(countries__id__in=item)
                 elif p == 'actor':
-                    films = films.filter(actors__id=item)
+                    films = films.filter(actors__id__in=item)
         return films
 
 

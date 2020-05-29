@@ -2,11 +2,12 @@
 
 <div class="col">
     <div class="card film-card">
+        <a class="film-card__img_a" href="{% url 'film' film.id %}"/>
         {% if film.image %}
-        <img src="{{ film.image.url }}" class="card-img-top film-card__img" alt="no film image">
+            <img src="{{ film.image.url }}" class="card-img-top film-card__img" alt="no film image">
         {% else %}
 
-        <img src="#" class="card-img-top film-card__img" alt="no film image">
+            <img src="#" class="card-img-top film-card__img" alt="no film image">
         {% endif %}
         <div class="card-body">
             <a href="{% url 'film' film.id %}" class="card-text">

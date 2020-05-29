@@ -29,6 +29,7 @@ class IndexView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['new_films'] = Film.objects.new_top()
         context['most_commented'] = Film.objects.most_commented()
+        context['most_rating'] = Film.objects.most_rating()
         return context
 
 
@@ -67,7 +68,7 @@ class FilmView(FormView, DetailView):
             author=self.request.user.profile,
             film_id=self.kwargs['pk'])
         comments = Comment.objects.filter(film__id=self.kwargs['pk'])
-        comments, p = paginate(comments, self.request, 20)
+        comments, p = paginate(comments, self.request)
         return redirect('/film/' + str(self.kwargs['pk']) + '/' + '?page='+str(p.num_pages) + '#paginated')  # todo правильные редиректы
 
     def get_context_data(self, **kwargs):
