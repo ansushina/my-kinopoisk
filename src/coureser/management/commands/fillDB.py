@@ -16,10 +16,10 @@ class Command(BaseCommand):
     @transaction.atomic()
     def handle(self, *args, **options):
 
-        # self.generate_genres()
-        # self.generate_countries()
-        # self.generate_actors()
-        # self.generate_films()
+        self.generate_genres()
+        self.generate_countries()
+        self.generate_actors()
+        self.generate_films()
         self.set_images()
 
     def generate_genres(self):
@@ -55,12 +55,10 @@ class Command(BaseCommand):
         actors = Actor.objects.all()
         countries = Country.objects.all()
         for film in films:
-            r = requests.get(film['image'])
             f = Film.objects.create(
                 title=film['title'],
                 year=film['year'],
-                description=film['description'],
-                image=ImageFile(r.content)
+                description=film['description']
             )
             f.save()
             for g in film['genres']:
