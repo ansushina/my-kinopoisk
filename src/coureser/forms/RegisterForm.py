@@ -1,10 +1,6 @@
 from django import forms
 
-error_username = {
-    'required': 'Пожалуйста, заполните это поле!',
-    'max_length': 'Имя не может превышать 20 символов!',
-    'min_length': 'Имя должно быть больше 2 символов!'
-}
+from coureser.common.constants import error_username
 
 
 class RegisterForm(forms.Form):

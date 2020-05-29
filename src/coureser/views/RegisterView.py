@@ -1,11 +1,10 @@
-from django.contrib import auth
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.shortcuts import redirect
 from django.views.generic import FormView
 
+from coureser.common.constants import *
 from coureser.forms.RegisterForm import RegisterForm
-from coureser.models.Profile import Profile
+from coureser.logic.ProfileLogic import ProfileLogic
 
 
 class RegisterView(FormView):
@@ -15,21 +14,15 @@ class RegisterView(FormView):
     def form_valid(self, form):
         if self.request.user.is_authenticated:
             return redirect('/')  # todo равильные редиректы
-        cdata = form.cleaned_data
-        if cdata['password'] == cdata['rep_password']:
-            u = User.objects.create_user(
-                username=cdata['username'],
-                email=cdata['email'],
-                password=cdata['password'])
-            Profile.objects.create(user=u)
 
-            user = auth.authenticate(**cdata)
-            if user is not None:
-                auth.login(self.request, user)
-                return redirect('/')
-            return redirect('/')  # todo правильные редиректы
-        else:
-            form.add_error('password', ValidationError(('Пароли должны совпадать!'), code='invalid'))
-            form.add_error('rep_password', ValidationError(('Пароли должны совпадать!'), code='invalid'))
-
+        error = ProfileLogic.create_user(form.cleaned_data, self.request)
+        if not error:
+            return redirect('/')
+        elif error == error_invalid_email:
+            form.add_error('email', ValidationError(error, code='invalid'))
+        elif error == error_incorrect_passwords:
+            form.add_error('password', ValidationError(error, code='invalid'))
+            form.add_error('rep_password', ValidationError(error, code='invalid'))
+        elif error == error_invalid_name:
+            form.add_error('username', ValidationError(error, code='invalid'))
         return self.render_to_response(self.get_context_data(form=form))

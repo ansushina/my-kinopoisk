@@ -14,7 +14,6 @@ class SettingsView(FormView):
             return redirect('/login/')
         form = SettingsForm(self.request.POST, self.request.FILES)
         if form.is_valid():
-            cdata = form.cleaned_data
-            print(cdata)
-            Profile.objects.update(self.request.user, cdata)
+            Profile.objects.update(self.request.user, form.cleaned_data)
             return redirect('/')
+        return self.render_to_response(self.get_context_data(form=form))

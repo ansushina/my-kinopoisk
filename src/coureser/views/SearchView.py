@@ -11,10 +11,7 @@ class SearchView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        query = self.request.GET.get('q')
-        querydict = self.request.GET
-        films = Film.objects.search_with_filters(querydict)
-        films, p = paginate(films, self.request, 20)
-        context['films'] = films
-        context['form'] = self.form_class(querydict)
+        films = Film.objects.search_with_filters(self.request.GET)
+        context['films'], p = paginate(films, self.request, 20)
+        context['form'] = self.form_class(self.request.GET)
         return context

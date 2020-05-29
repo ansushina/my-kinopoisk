@@ -10,7 +10,7 @@ class FilmManager(models.Manager):
         return self.annotate(count=Count('comment')).order_by('-count')[:10]
 
     def most_rating(self):
-        return self.order_by('rating')[:10]
+        return self.order_by('-rating')[:10]
 
     def count_rating(self, film_id):
         film = self.get(id=film_id)

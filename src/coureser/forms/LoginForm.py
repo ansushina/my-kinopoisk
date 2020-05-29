@@ -1,6 +1,6 @@
 from django import forms
 
-from coureser.forms.RegisterForm import error_username
+from coureser.common.constants import error_username
 
 
 class LoginForm(forms.Form):
