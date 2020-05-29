@@ -1,12 +1,19 @@
 from django.contrib import admin
 
-from coureser import models
 
 # Register your models here.
-admin.site.register(models.Profile)
-admin.site.register(models.Like)
-admin.site.register(models.Film)
-admin.site.register(models.Comment)
-admin.site.register(models.Actor)
-admin.site.register(models.Genre)
-admin.site.register(models.Country)
+from coureser.models.Actor import Actor
+from coureser.models.Comment import Comment
+from coureser.models.Country import Country
+from coureser.models.Film import Film
+from coureser.models.Genre import Genre
+from coureser.models.Like import Like
+from coureser.models.Profile import Profile
+
+admin.site.register(Profile)
+admin.site.register(Like)
+admin.site.register(Film)
+admin.site.register(Comment)
+admin.site.register(Actor)
+admin.site.register(Genre)
+admin.site.register(Country)

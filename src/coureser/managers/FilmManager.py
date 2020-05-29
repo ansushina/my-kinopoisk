@@ -1,7 +1,5 @@
-from django.contrib.auth.models import User
-from django.db import models
 from django.db.models import Count, Q
-from django.http import JsonResponse
+from django.db import models
 
 
 class FilmManager(models.Manager):
@@ -48,37 +46,3 @@ class FilmManager(models.Manager):
                     films = films.filter(actors__id__in=item)
         return films
 
-
-class ProfileManager(models.Manager):
-    def update(self, user, cdata):
-        user_fields, profile_fields = ['username', 'email'], ['avatar']
-        fields_to_update = {'user': [], 'profile': []}
-        profile = self.get(user=user.id)
-        user = User.objects.get(pk=user.id)
-        for key in user_fields:
-            value = cdata.get(key, False)
-            if value:
-                fields_to_update['user'].append(key)
-                setattr(user, key, value)
-
-        value = cdata.get('avatar', False)
-        if value:
-            fields_to_update['profile'].append('avatar')
-            print(value)
-            setattr(profile, 'avatar', value)
-        user.save(update_fields=fields_to_update['user'])
-        profile.save(update_fields=fields_to_update['profile'])
-
-
-class LikeManager(models.Manager):
-    def like(self, value, film_id, user):
-        print(film_id)
-        film = self.filter(id=film_id).first()
-        like = self.filter(author_id=user.id, film_id=film_id).first()
-        if like:
-            setattr(like, 'value', value)
-            like.save()
-            return JsonResponse({"status": "ok"})
-        print(user.id)
-        self.create(author_id=user.id, film_id=film_id, value=value)
-        return JsonResponse({"status": "ok"})
