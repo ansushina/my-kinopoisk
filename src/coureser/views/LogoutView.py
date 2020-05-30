@@ -1,10 +1,11 @@
 from django.contrib import auth
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views import View
 
 
-class LogoutView(LoginRequiredMixin, View):
+class LogoutView(View):
     def get(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            return redirect('/')
         auth.logout(request)
         return redirect('/')

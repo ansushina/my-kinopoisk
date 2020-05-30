@@ -12,7 +12,47 @@
                     {% include 'inc/film-big-card.html' %}
                 {% endfor %}
             </div>
-            {% include 'inc/pagination.html' with page=films %}
+            <div class="row">
+                <nav aria-label="...">
+                    <ul class="pagination">
+                        {% if films.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ films.previous_page_link }}#paginated"
+                                   tabindex="-1">Previous</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link"
+                                   href="?page={{ films.previous_page_link }}#paginated">{{ films.previous_page_number }}</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                            </li>
+                        {% endif %}
+                        {% if films.number %}
+                            <li class="page-item active" aria-current="page">
+                                <a class="page-link">{{ films.number }}<span class="sr-only">(current)</span></a>
+                            </li>
+                        {% else %}
+                            <li class="page-item active" aria-current="page">
+                                <a class="page-link">0<span class="sr-only">(current)</span></a>
+                            </li>
+                        {% endif %}
+                        {% if films.has_next %}
+                            <li class="page-item">
+                                <a class="page-link"
+                                   href="?page={{ films.next_page_link }}#paginated">{{ films.next_page_number }}</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ films.next_page_link }}#paginated">Next</a></li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#">Next</a></li>
+                        {% endif %}
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
         <div class="col-3">
             <div class="p-3">
