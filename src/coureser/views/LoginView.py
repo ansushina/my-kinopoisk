@@ -1,9 +1,8 @@
+from coureser.common.constants import error_no_user
+from coureser.forms.LoginForm import LoginForm
 from django.contrib import auth
 from django.shortcuts import redirect
 from django.views.generic import FormView
-
-from coureser.common.constants import error_no_user
-from coureser.forms.LoginForm import LoginForm
 
 
 class LoginView(FormView):

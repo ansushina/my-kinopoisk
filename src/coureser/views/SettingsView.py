@@ -1,8 +1,7 @@
-from django.shortcuts import redirect
-from django.views.generic import FormView
-
 from coureser.forms.SettingsForm import SettingsForm
 from coureser.models.Profile import Profile
+from django.shortcuts import redirect
+from django.views.generic import FormView
 
 
 class SettingsView(FormView):

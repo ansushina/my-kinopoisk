@@ -1,10 +1,9 @@
-from django.core.exceptions import ValidationError
-from django.shortcuts import redirect
-from django.views.generic import FormView
-
 from coureser.common.constants import *
 from coureser.forms.RegisterForm import RegisterForm
 from coureser.logic.ProfileLogic import ProfileLogic
+from django.core.exceptions import ValidationError
+from django.shortcuts import redirect
+from django.views.generic import FormView
 
 
 class RegisterView(FormView):

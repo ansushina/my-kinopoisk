@@ -1,11 +1,10 @@
 from coureser.forms.CommentForm import CommentForm
 from coureser.forms.LikeForm import LikeForm
+from coureser.logic.CommentLogic import CommentLogic
+from coureser.logic.LikeLogic import LikeLogic
 from coureser.models.Film import Film
 from django.shortcuts import redirect
 from django.views.generic import FormView, DetailView
-
-from coureser.logic.CommentLogic import CommentLogic
-from coureser.logic.LikeLogic import LikeLogic
 
 
 class FilmView(FormView, DetailView):
@@ -17,8 +16,7 @@ class FilmView(FormView, DetailView):
         if not self.request.user.is_authenticated:
             return redirect('/login/')
 
-        cdata = form.cleaned_data
-        CommentLogic.comment(cdata['text'], self.request.user, self.kwargs['pk'])
+        CommentLogic.comment(form.cleaned_data['text'], self.request.user, self.kwargs['pk'])
         comments, page = CommentLogic.paginate(self.request, self.kwargs['pk'])
         return redirect('/film/' + str(self.kwargs['pk']) + '/' + '?page=' + str(page) + '#paginated')
 
