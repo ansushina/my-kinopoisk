@@ -2,7 +2,7 @@ from coureser.forms.LikeForm import LikeForm
 from django.shortcuts import redirect
 from django.views.generic import FormView
 
-from src.coureser.logic.LikeLogic import LikeLogic
+from coureser.logic.LikeLogic import LikeLogic
 
 
 class LikeView(FormView):

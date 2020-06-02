@@ -10,6 +10,9 @@ class LikeLogic():
 
     @staticmethod
     def get_like_data(pk, user):
+        if not user.is_authenticated:
+            return {}
+
         like = Like.objects.filter(film_id=pk, author=user.profile).first()
 
         if like:
